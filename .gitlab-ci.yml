@@ -1,0 +1,31 @@
+stages:
+  - build
+  - deploy
+
+build:
+  image: node:16
+  stage: build
+  script:
+    - npm install
+    - CI=false npm run build
+  tags: 
+    - docker 
+    - general 
+    - labranet
+  artifacts:
+    paths:
+      - build/
+
+pages:
+  stage: deploy
+  script:
+    - cp -r build/* public/
+  tags: 
+    - docker 
+    - general 
+    - labranet
+  artifacts:
+    paths:
+      - public
+  only:
+    - main
